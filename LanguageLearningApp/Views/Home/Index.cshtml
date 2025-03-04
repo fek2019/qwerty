@@ -1,0 +1,87 @@
+@model LanguageViewModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="py-5 text-center">
+    <h1 class="display-4 mb-4">Learn Languages the Smart Way</h1>
+    <p class="lead mb-5">Master English, Kazakh, and Turkish with our interactive lessons, personalized learning paths, and adaptive testing system.</p>
+    <div class="d-flex justify-content-center gap-3">
+        <a asp-controller="LearningPath" asp-action="Index" asp-route-language="English" class="btn btn-primary btn-lg px-4">Start Learning</a>
+        <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-light btn-lg px-4">Create Account</a>
+    </div>
+</div>
+
+<div class="py-5">
+    <h2 class="text-center mb-4">Choose Your Language</h2>
+    <p class="text-center text-muted mb-5">Select a language to begin your learning journey. Our interactive lessons will help you master vocabulary, grammar, and conversation skills.</p>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+        @foreach (var language in Model.Languages)
+        {
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm hover-card">
+                    <img src="@language.FlagImage" class="card-img-top" alt="@language.Language">
+                    <div class="card-body">
+                        <h5 class="card-title">@language.Title</h5>
+                        <p class="card-text">@language.Description</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-primary">@language.Difficulty</span>
+                            <span class="text-muted">@language.TotalLessons Lessons</span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <a asp-controller="LearningPath" asp-action="Index" asp-route-language="@language.Language" class="btn btn-primary w-100">Start Learning</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="py-5 bg-dark text-light rounded-3 my-5">
+    <div class="container py-4">
+        <h2 class="text-center mb-4">Why Choose Our Platform</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card bg-dark border-light h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-circle bg-primary p-3 me-3">
+                                <i class="bi bi-book fs-4"></i>
+                            </div>
+                            <h5 class="card-title mb-0">Structured Learning Paths</h5>
+                        </div>
+                        <p class="card-text">Follow a carefully designed curriculum with 6 difficulty levels, each containing 7 interactive tests to build your skills progressively.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card bg-dark border-light h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-circle bg-success p-3 me-3">
+                                <i class="bi bi-graph-up fs-4"></i>
+                            </div>
+                            <h5 class="card-title mb-0">Progress Tracking</h5>
+                        </div>
+                        <p class="card-text">Monitor your learning journey with detailed analytics, test scores, and personalized recommendations to improve your weak areas.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card bg-dark border-light h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-circle bg-info p-3 me-3">
+                                <i class="bi bi-translate fs-4"></i>
+                            </div>
+                            <h5 class="card-title mb-0">Multilingual Interface</h5>
+                        </div>
+                        <p class="card-text">Use the platform in your preferred language with support for English, Kazakh, and Turkish interfaces.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

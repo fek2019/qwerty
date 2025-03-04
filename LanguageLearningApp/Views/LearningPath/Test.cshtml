@@ -1,0 +1,311 @@
+@model TestViewModel
+@{
+    ViewData["Title"] = $"{Model.Test.Title}";
+}
+
+<div class="container py-5">
+    <a asp-controller="LearningPath" asp-action="Level" asp-route-language="@Model.Language" asp-route-level="@Model.Level" class="btn btn-outline-secondary mb-4">
+        <i class="bi bi-arrow-left"></i> Back to Tests
+    </a>
+
+    <div class="card shadow-sm mb-5">
+        <div class="card-body">
+            <h1 class="card-title h3 mb-3">@Model.Test.Title</h1>
+            <p class="card-text">@Model.Test.Description</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="badge @(Model.Test.Difficulty == "easy" ? "bg-success" : Model.Test.Difficulty == "medium" ? "bg-warning" : "bg-danger") me-2">@Model.Test.Difficulty</span>
+                    <span class="text-muted"><i class="bi bi-clock"></i> @Model.Test.EstimatedDuration min</span>
+                </div>
+                <span class="text-muted">@Model.Test.Questions.Count questions</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="test-container">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <span id="current-question">1</span>/<span id="total-questions">@Model.Test.Questions.Count</span>
+                    </div>
+                    <div>
+                        <span id="timer">15:00</span>
+                    </div>
+                    <div>
+                        <span id="score">0</span> points
+                    </div>
+                </div>
+
+                <div class="progress mb-4">
+                    <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+
+                @foreach (var question in Model.Test.Questions)
+                {
+                    <div class="question" id="question-@question.Id" style="display: none;">
+                        <h2 class="h4 mb-4">@question.Question</h2>
+
+                        @if (!string.IsNullOrEmpty(question.ImageUrl))
+                        {
+                            <div class="text-center mb-4">
+                                <img src="@question.ImageUrl" alt="Question image" class="img-fluid rounded" style="max-height: 200px;">
+                            </div>
+                        }
+
+                        @if (question.Type == "multiple-choice")
+                        {
+                            <div class="options">
+                                @foreach (var option in question.Options)
+                                {
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="@question.Id" id="@question.Id-@option.Replace(" ", "-")" value="@option">
+                                        <label class="form-check-label" for="@question.Id-@option.Replace(" ", "-")">
+                                            @option
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else if (question.Type == "checkbox")
+                        {
+                            <div class="options">
+                                @foreach (var option in question.Options)
+                                {
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" name="@question.Id" id="@question.Id-@option.Replace(" ", "-")" value="@option">
+                                        <label class="form-check-label" for="@question.Id-@option.Replace(" ", "-")">
+                                            @option
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else if (question.Type == "text")
+                        {
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="@question.Id-answer" placeholder="Your answer">
+                            </div>
+                        }
+
+                        <div class="feedback" style="display: none;">
+                            <div class="alert" role="alert">
+                                <h5 class="alert-heading">Correct!</h5>
+                                <p>@question.Explanation</p>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button class="btn btn-primary check-answer" data-question-id="@question.Id">Check Answer</button>
+                            <button class="btn btn-outline-primary next-question" style="display: none;" data-question-id="@question.Id">Next Question</button>
+                        </div>
+                    </div>
+                }
+
+                <div id="test-complete" style="display: none;">
+                    <div class="text-center">
+                        <h2 class="mb-4">Test Complete!</h2>
+                        <div class="mb-4">
+                            <div class="display-1 mb-3"><span id="final-score">0</span>%</div>
+                            <p class="lead">You've completed the test. Here's your score.</p>
+                        </div>
+                        <div class="mb-4">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card bg-light mb-3">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">Total Questions</h5>
+                                            <p class="card-text display-6" id="total-questions-result">@Model.Test.Questions.Count</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-success text-white mb-3">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">Correct</h5>
+                                            <p class="card-text display-6" id="correct-answers">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-danger text-white mb-3">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">Incorrect</h5>
+                                            <p class="card-text display-6" id="incorrect-answers">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <a asp-controller="LearningPath" asp-action="Level" asp-route-language="@Model.Language" asp-route-level="@Model.Level" class="btn btn-primary">Back to Tests</a>
+                            <button class="btn btn-outline-primary" id="retry-test">Retry Test</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize test
+            const questions = @Html.Raw(Json.Serialize(Model.Test.Questions));
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let correctAnswers = 0;
+            let incorrectAnswers = 0;
+            let timeLeft = @Model.Test.EstimatedDuration * 60; // Convert minutes to seconds
+            let timer;
+
+            // Show first question
+            document.getElementById('question-' + questions[0].id).style.display = 'block';
+            updateProgressBar();
+
+            // Start timer
+            startTimer();
+
+            // Check answer buttons
+            document.querySelectorAll('.check-answer').forEach(button => {
+                button.addEventListener('click', function() {
+                    const questionId = this.getAttribute('data-question-id');
+                    const question = questions.find(q => q.id === questionId);
+                    let userAnswer;
+                    let isCorrect = false;
+
+                    if (question.type === 'multiple-choice') {
+                        const selectedOption = document.querySelector(`input[name="${questionId}"]:checked`);
+                        if (selectedOption) {
+                            userAnswer = selectedOption.value;
+                            isCorrect = userAnswer === question.correctAnswer;
+                        }
+                    } else if (question.type === 'checkbox') {
+                        const selectedOptions = Array.from(document.querySelectorAll(`input[name="${questionId}"]:checked`))
+                            .map(input => input.value);
+                        userAnswer = selectedOptions;
+                        isCorrect = arraysEqual(selectedOptions.sort(), question.correctAnswer.sort());
+                    } else if (question.type === 'text') {
+                        userAnswer = document.getElementById(`${questionId}-answer`).value;
+                        isCorrect = userAnswer.toLowerCase() === question.correctAnswer.toLowerCase();
+                    }
+
+                    // Show feedback
+                    const feedbackElement = document.querySelector(`#question-${questionId} .feedback`);
+                    const alertElement = feedbackElement.querySelector('.alert');
+                    
+                    if (isCorrect) {
+                        alertElement.classList.add('alert-success');
+                        alertElement.querySelector('h5').textContent = 'Correct!';
+                        score += 10;
+                        correctAnswers++;
+                    } else {
+                        alertElement.classList.add('alert-danger');
+                        alertElement.querySelector('h5').textContent = 'Incorrect!';
+                        incorrectAnswers++;
+                        
+                        // Show correct answer
+                        let correctAnswerText = '';
+                        if (Array.isArray(question.correctAnswer)) {
+                            correctAnswerText = question.correctAnswer.join(', ');
+                        } else {
+                            correctAnswerText = question.correctAnswer;
+                        }
+                        
+                        alertElement.querySelector('p').innerHTML = 
+                            `The correct answer is: <strong>${correctAnswerText}</strong><br>${question.explanation}`;
+                    }
+                    
+                    feedbackElement.style.display = 'block';
+                    document.getElementById('score').textContent = score;
+                    
+                    // Hide check button and show next button
+                    this.style.display = 'none';
+                    document.querySelector(`#question-${questionId} .next-question`).style.display = 'block';
+                });
+            });
+
+            // Next question buttons
+            document.querySelectorAll('.next-question').forEach(button => {
+                button.addEventListener('click', function() {
+                    const questionId = this.getAttribute('data-question-id');
+                    document.getElementById('question-' + questionId).style.display = 'none';
+                    
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < questions.length) {
+                        document.getElementById('question-' + questions[currentQuestionIndex].id).style.display = 'block';
+                        document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+                        updateProgressBar();
+                    } else {
+                        // Test complete
+                        completeTest();
+                    }
+                });
+            });
+
+            // Retry test button
+            document.getElementById('retry-test').addEventListener('click', function() {
+                location.reload();
+            });
+
+            function startTimer() {
+                timer = setInterval(function() {
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    document.getElementById('timer').textContent = 
+                        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        completeTest();
+                    }
+                }, 1000);
+            }
+
+            function updateProgressBar() {
+                const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+                document.getElementById('progress-bar').style.width = `${progress}%`;
+                document.getElementById('progress-bar').setAttribute('aria-valuenow', progress);
+            }
+
+            function completeTest() {
+                clearInterval(timer);
+                
+                // Hide all questions
+                document.querySelectorAll('.question').forEach(question => {
+                    question.style.display = 'none';
+                });
+                
+                // Calculate final score
+                const finalScore = Math.round((correctAnswers / questions.length) * 100);
+                
+                // Update result screen
+                document.getElementById('final-score').textContent = finalScore;
+                document.getElementById('correct-answers').textContent = correctAnswers;
+                document.getElementById('incorrect-answers').textContent = incorrectAnswers;
+                
+                // Show result screen
+                document.getElementById('test-complete').style.display = 'block';
+                
+                // Submit results to server
+                submitTestResults(finalScore);
+            }
+
+            function submitTestResults(finalScore) {
+                // In a real app, this would send the results to the server
+                console.log('Test completed with score:', finalScore);
+                // You would typically use fetch or axios to post the results to an endpoint
+            }
+
+            function arraysEqual(a, b) {
+                if (a.length !== b.length) return false;
+                for (let i = 0; i < a.length; i++) {
+                    if (a[i] !== b[i]) return false;
+                }
+                return true;
+            }
+        });
+    </script>
+}

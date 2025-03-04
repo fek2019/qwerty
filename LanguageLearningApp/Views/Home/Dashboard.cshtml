@@ -1,0 +1,111 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container py-5">
+    <h1 class="mb-4">Welcome, @Model.UserName!</h1>
+
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title h4 mb-4">Your Progress Overview</h2>
+                    
+                    @foreach (var language in Model.LanguageProgress)
+                    {
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>@language.Key</span>
+                                <span>@language.Value%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: @language.Value%" 
+                                     aria-valuenow="@language.Value" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="card-title h4 mb-4">Completed Lessons</h2>
+                    @if (Model.CompletedLanguages.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var completed in Model.CompletedLanguages)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    @completed
+                                    <span class="badge bg-success rounded-pill">Completed</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">You haven't completed any lessons yet. Start learning!</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="card-title h4 mb-4">Recent Test Results</h2>
+                    @if (Model.RecentTestResults.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var result in Model.RecentTestResults)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div>@result.Language Level @result.Level - @result.TestId</div>
+                                        <small class="text-muted">@result.CompletedAt.ToString("MMM dd, yyyy")</small>
+                                    </div>
+                                    <span class="badge bg-primary rounded-pill">@result.Score%</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">You haven't taken any tests yet. Start testing your knowledge!</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title h4 mb-4">Recommended Next Steps</h2>
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        @foreach (var recommendation in Model.Recommendations)
+                        {
+                            <div class="col">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@recommendation</h5>
+                                        <p class="card-text">Continue your learning journey with this recommended lesson.</p>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0">
+                                        <a href="#" class="btn btn-primary w-100">Start Lesson</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

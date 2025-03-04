@@ -1,98 +1,224 @@
 /* Dark Theme Styles */
-body.dark-theme {
+body {
   background-color: #121212;
   color: #e0e0e0;
 }
 
-.dark-theme .navbar {
-  background-color: #1e1e1e;
+.navbar {
+  background-color: #1a1a1a !important;
+  border-color: #333 !important;
 }
 
-.dark-theme .card {
+.card {
   background-color: #1e1e1e;
   color: #e0e0e0;
+  border-color: #333;
 }
 
-.dark-theme .card-footer {
+.card-footer {
   background-color: #1e1e1e;
+  border-color: #333;
 }
 
-.dark-theme .form-control,
-.dark-theme .input-group-text {
+.form-control,
+.input-group-text {
   background-color: #2d2d2d;
   border-color: #444;
   color: #e0e0e0;
 }
 
-.dark-theme .form-control:focus {
+.form-control:focus {
   background-color: #2d2d2d;
   color: #e0e0e0;
+  border-color: #0d6efd;
 }
 
-.dark-theme .btn-outline-light {
+.btn-outline-light {
   color: #e0e0e0;
   border-color: #e0e0e0;
 }
 
-.dark-theme .btn-outline-light:hover {
+.btn-outline-light:hover {
   background-color: #e0e0e0;
   color: #121212;
 }
 
-.dark-theme .text-muted {
+.btn-outline-secondary {
+  color: #aaa;
+  border-color: #555;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #555;
+  color: #fff;
+  border-color: #555;
+}
+
+.text-muted {
   color: #aaa !important;
 }
 
-.dark-theme .dropdown-menu {
+.dropdown-menu {
   background-color: #2d2d2d;
   border-color: #444;
 }
 
-.dark-theme .dropdown-item {
+.dropdown-item {
   color: #e0e0e0;
 }
 
-.dark-theme .dropdown-item:hover {
+.dropdown-item:hover {
   background-color: #3d3d3d;
   color: #fff;
 }
 
-.dark-theme .nav-tabs {
+.nav-tabs {
   border-color: #444;
 }
 
-.dark-theme .nav-tabs .nav-link {
+.nav-tabs .nav-link {
   color: #aaa;
 }
 
-.dark-theme .nav-tabs .nav-link.active {
+.nav-tabs .nav-link.active {
   background-color: #2d2d2d;
   border-color: #444 #444 #2d2d2d;
   color: #e0e0e0;
 }
 
-.dark-theme .footer {
-  background-color: #1e1e1e;
-  border-color: #444;
+.footer {
+  background-color: #1a1a1a;
+  border-color: #333;
+  color: #aaa;
 }
 
-.dark-theme .list-group-item {
+.list-group-item {
   background-color: #2d2d2d;
   border-color: #444;
   color: #e0e0e0;
 }
 
-.dark-theme .bg-light {
+.bg-light {
   background-color: #2d2d2d !important;
   color: #e0e0e0 !important;
 }
 
-.dark-theme .form-check-input {
+.bg-dark {
+  background-color: #1a1a1a !important;
+}
+
+.form-check-input {
   background-color: #3d3d3d;
   border-color: #555;
 }
 
-.dark-theme .form-check-input:checked {
+.form-check-input:checked {
   background-color: #0d6efd;
   border-color: #0d6efd;
+}
+
+.border {
+  border-color: #444 !important;
+}
+
+.border-bottom {
+  border-bottom-color: #333 !important;
+}
+
+.border-top {
+  border-top-color: #333 !important;
+}
+
+.progress {
+  background-color: #333;
+}
+
+.badge.bg-primary {
+  background-color: #0d6efd !important;
+}
+
+.badge.bg-success {
+  background-color: #198754 !important;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+  color: #212529;
+}
+
+.badge.bg-info {
+  background-color: #0dcaf0 !important;
+  color: #212529;
+}
+
+.badge.bg-secondary {
+  background-color: #6c757d !important;
+}
+
+.alert-success {
+  background-color: #0f5132;
+  color: #d1e7dd;
+  border-color: #0f5132;
+}
+
+.alert-danger {
+  background-color: #842029;
+  color: #f8d7da;
+  border-color: #842029;
+}
+
+.ratio {
+  background-color: #2d2d2d;
+}
+
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.5) !important;
+}
+
+.shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.5) !important;
+}
+
+.hover-card:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Navigation menu styling */
+.navigation-menu {
+  background-color: #1e1e1e;
+}
+
+.navigation-menu-content {
+  background-color: #2d2d2d;
+  border-color: #444;
+}
+
+.navigation-menu-trigger {
+  color: #e0e0e0;
+}
+
+.navigation-menu-link:hover {
+  background-color: #3d3d3d;
+}
+
+/* Tabs styling */
+.tabs-list {
+  background-color: #2d2d2d;
+}
+
+.tabs-trigger {
+  color: #aaa;
+}
+
+.tabs-trigger[data-state="active"] {
+  background-color: #3d3d3d;
+  color: #fff;
+}
+
+.tabs-content {
+  background-color: #1e1e1e;
 }

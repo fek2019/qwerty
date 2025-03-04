@@ -56,12 +56,12 @@ namespace LanguageLearningApp.Controllers
         public IActionResult Dashboard()
         {
             // Check if user is logged in
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated == true)
             {
                 var viewModel = new DashboardViewModel
                 {
-                    UserName = User.Identity.Name,
-                    Email = User.Identity.Name, // In a real app, get from claims
+                    UserName = User.Identity.Name ?? "User",
+                    Email = User.Identity.Name ?? "user@example.com", // In a real app, get from claims
                     CompletedLanguages = new List<string> { "English Level 1", "Kazakh Level 1" },
                     LanguageProgress = new Dictionary<string, int>
                     {
@@ -114,7 +114,7 @@ namespace LanguageLearningApp.Controllers
 
         public IActionResult Profile()
         {
-            if (!User.Identity.IsAuthenticated)
+            if (User.Identity?.IsAuthenticated != true)
             {
                 return RedirectToAction("Login", "Auth");
             }
@@ -131,7 +131,7 @@ namespace LanguageLearningApp.Controllers
 
     public class ErrorViewModel
     {
-        public string RequestId { get; set; }
+        public string? RequestId { get; set; }
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
 }

@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Tests";
+}
+
+<div class="container py-5">
+    <h1 class="mb-4">Language Tests</h1>
+    <p class="lead mb-5">Choose a language to view available tests and assess your language skills.</p>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm hover-card">
+                <img src="https://images.unsplash.com/photo-1520986606214-8b456906c813?w=600&q=80" class="card-img-top" alt="English">
+                <div class="card-body">
+                    <h5 class="card-title">English Tests</h5>
+                    <p class="card-text">Test your English skills with our comprehensive assessments covering vocabulary, grammar, listening, and more.</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="LearningPath" asp-action="Level" asp-route-language="English" asp-route-level="1" class="btn btn-primary w-100">View Tests</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm hover-card">
+                <img src="https://images.unsplash.com/photo-1580100586938-02822d99c4a8?w=600&q=80" class="card-img-top" alt="Kazakh">
+                <div class="card-body">
+                    <h5 class="card-title">Kazakh Tests</h5>
+                    <p class="card-text">Assess your Kazakh language proficiency with tests designed for various skill levels and language aspects.</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="LearningPath" asp-action="Level" asp-route-language="Kazakh" asp-route-level="1" class="btn btn-primary w-100">View Tests</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm hover-card">
+                <img src="https://images.unsplash.com/photo-1541300613939-71366b37c92e?w=600&q=80" class="card-img-top" alt="Turkish">
+                <div class="card-body">
+                    <h5 class="card-title">Turkish Tests</h5>
+                    <p class="card-text">Evaluate your Turkish language skills with our diverse range of tests covering all aspects of language learning.</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="LearningPath" asp-action="Level" asp-route-language="Turkish" asp-route-level="1" class="btn btn-primary w-100">View Tests</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
